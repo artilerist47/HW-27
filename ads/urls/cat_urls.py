@@ -1,6 +1,6 @@
 from django.urls import path
 
-from ads import cat_views
+from ads.views import cat_views
 
 urlpatterns = [
     path('', cat_views.CategoryListView.as_view()),

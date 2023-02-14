@@ -1,6 +1,6 @@
 from django.urls import path
 
-from ads import user_views
+from ads.views import user_views
 
 urlpatterns = [
     path('', user_views.UserListView.as_view()),

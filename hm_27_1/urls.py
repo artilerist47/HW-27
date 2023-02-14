@@ -18,17 +18,18 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from ads import views, location_views
+from ads import views
+from ads.views import location_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index),
-    path('cat/', include('ads.cat_urls')),
-    path('ad/', include('ads.ad_urls')),
-    path('user/', include('ads.user_urls')),
+    # path('', views.index),
+    path('cat/', include('ads.urls.cat_urls')),
+    path('ad/', include('ads.urls.ad_urls')),
+    path('user/', include('ads.urls.user_urls')),
     path('location/', location_views.LocationListView.as_view()),
     # path('media/', include('media.media_urls')),
-    path('media/', include('ads.media_urls')),
+    # path('media/', include('ads.media_urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #
 # if settings.DEBUG:
