@@ -59,6 +59,11 @@ class AdCreateSerializer(serializers.ModelSerializer):
 
 class AdUpdateSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
+    name = serializers.CharField(required=False)
+    author_id = serializers.IntegerField(required=False)
+    price = serializers.FloatField(required=False)
+    description = serializers.CharField(required=False)
+    is_published = serializers.BooleanField(required=False)
 
     class Meta:
         model = Ad

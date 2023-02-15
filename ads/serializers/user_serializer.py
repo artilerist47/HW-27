@@ -80,6 +80,11 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 class UserUpdateSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
+    username = serializers.CharField(required=False)
+    password = serializers.CharField(required=False)
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
+    age = serializers.IntegerField(required=False)
 
     class Meta:
         model = User
