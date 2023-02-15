@@ -109,7 +109,7 @@ class AdvertisementsCreateView(CreateView):
 @method_decorator(csrf_exempt, name='dispatch')
 class AdvertisementsUpdateView(UpdateView):
     model = Ad
-    fields = ["id", "name", "author", "price", "description", "is_published"]
+    fields = ["id", "name", "author", "price", "description"]
 
     def patch(self, request, *args, **kwargs):
         instance = self.get_object()

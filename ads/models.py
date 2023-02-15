@@ -58,18 +58,23 @@ class User(models.Model):
 
 
 class Ad(models.Model):
+    # STATUS = [
+    #     ("False", "Отсутствует"),
+    #     ("True", "В наличии"),
+    #     ("needs verification", "Требуется проверить на наличие")
+    # ]
     STATUS = [
-        ("False", "Отсутствует"),
-        ("True", "В наличии"),
-        ("needs verification", "Требуется проверить на наличие")
+        (False, "Отсутствует"),
+        (True, "В наличии")
     ]
     name = models.CharField(max_length=100)
     # author = models.CharField(max_length=100)
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
     price = models.FloatField()
     description = models.CharField(max_length=1000)
-    is_published = models.CharField(max_length=18, choices=STATUS, default="needs verification")  #BooleanField()
-    # image = models.ForeignKey(Media, on_delete=models.DO_NOTHING, null=True)  # не сделано
+    # is_published = models.CharField(max_length=18, choices=STATUS, default="needs verification")
+    is_published = models.BooleanField(max_length=5, choices=STATUS, default=False)
+    # image = models.ForeignKey(Media, on_delete=models.DO_NOTHING, null=True)
     image = models.ImageField(upload_to='images/', null=True, blank=True, verbose_name='Изображение')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 
