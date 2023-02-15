@@ -3,9 +3,9 @@ from django.core.management.base import BaseCommand
 from ads.models import Category, Ad, Location, User
 from ads.management.data.csv_to_json import load_csv_as_json
 
-JSONS_PATH = Path(__file__).parent.parent.absolute().joinpath('data', 'data')
-CATEGORIES_FILE_CSV = JSONS_PATH.joinpath('category.csv')
-ADVERTISEMENTS_FILE_CSV = JSONS_PATH.joinpath('ad.csv')
+JSONS_PATH = Path(__file__).parent.parent.absolute().joinpath('data', 'datasets')
+CATEGORIES_FILE_CSV = JSONS_PATH.joinpath('categories.csv')
+ADVERTISEMENTS_FILE_CSV = JSONS_PATH.joinpath('ads.csv')
 LOCATIONS_FILE_CSV = JSONS_PATH.joinpath('location.csv')
 USERS_FILE_CSV = JSONS_PATH.joinpath('user.csv')
 
@@ -28,7 +28,7 @@ class Command(BaseCommand):
         for item in data:
             item.pop('id')
 
-            new_ad = Ad()
+            new_ad = Advertisement()
             [setattr(new_ad, key, value) for key, value in item.items()]
             new_ad.save()
         print('Advertisements was imported')
