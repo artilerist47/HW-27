@@ -1,7 +1,5 @@
 from django.db import models
 
-# from media.models import Media
-
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -50,34 +48,12 @@ class User(models.Model):
         return self.locations.name if self.locations else None
 
 
-# class Media(models.Model):
-#     name = models.CharField(max_length=20, null=True)
-#     image = models.ImageField(upload_to='images/', null=True)
-#
-#     class Meta:
-#         verbose_name = "Медиа"
-#         verbose_name_plural = "Медиа"
-#
-#     def __str__(self):
-#         return self.name
-
-
 class Ad(models.Model):
-    # STATUS = [
-    #     ("False", "Отсутствует"),
-    #     ("True", "В наличии"),
-    #     ("needs verification", "Требуется проверить на наличие")
-    # ]
-    # STATUS = [
-    #     (False, "Отсутствует"),
-    #     (True, "В наличии")
-    # ]
     name = models.CharField(max_length=100)
     # author = models.CharField(max_length=100)
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
     price = models.FloatField()
     description = models.CharField(max_length=1000)
-    # is_published = models.CharField(max_length=18, choices=STATUS, default="needs verification")
     is_published = models.BooleanField(default=False)
     # image = models.ForeignKey(Media, on_delete=models.DO_NOTHING, null=True)
     image = models.ImageField(upload_to='images/', null=True, blank=True, verbose_name='Изображение')
