@@ -41,6 +41,7 @@ class AdDetailSerializer(serializers.ModelSerializer):
 
 class AdCreateSerializer(serializers.ModelSerializer):
     # author = serializers.CharField()
+    # category
     id = serializers.IntegerField(required=False)  #зачем оно нужно???
 
     class Meta:
@@ -75,14 +76,6 @@ class AdUpdateSerializer(serializers.ModelSerializer):
             "description",
             "is_published"
         ]
-
-    # def is_valid(self, *, raise_exception=False):
-    #     return super().is_valid(raise_exception=raise_exception)
-    #
-    # def save(self):
-    #     ad = super().save()
-    #     ad.save()
-    #     return ad
 
 
 class AdDeleteSerializer(serializers.ModelSerializer):

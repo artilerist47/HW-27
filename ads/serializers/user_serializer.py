@@ -6,7 +6,7 @@ from ads.models import User
 class UserListSerializer(serializers.ModelSerializer):
     locations = serializers.SlugRelatedField(
         # many=True,  #не отображается в виде списка и по чему-то не заносится id локации в таблицу юзеров
-        read_only=True,  # только чтение, менять нельзя
+        read_only=True,
         slug_field="name"
     )
 

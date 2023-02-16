@@ -50,12 +50,10 @@ class User(models.Model):
 
 class Ad(models.Model):
     name = models.CharField(max_length=100)
-    # author = models.CharField(max_length=100)
     author = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
     price = models.FloatField()
     description = models.CharField(max_length=1000)
     is_published = models.BooleanField(default=False)
-    # image = models.ForeignKey(Media, on_delete=models.DO_NOTHING, null=True)
     image = models.ImageField(upload_to='images/', null=True, blank=True, verbose_name='Изображение')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 
