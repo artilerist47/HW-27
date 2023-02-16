@@ -138,4 +138,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = "/ads/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'all_media')
 
-TOTAL_ON_PAGE = 5
+
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS" : "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE" : 6,
+}
