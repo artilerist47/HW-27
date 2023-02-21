@@ -3,8 +3,10 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import UpdateView
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.permissions import IsAuthenticated
 
 from ads.models import Ad
+from ads.permissions import AdsCreatePermission
 from ads.serializers.ad_serializer import AdListSerializer, AdDetailSerializer, AdCreateSerializer, AdUpdateSerializer, \
     AdDeleteSerializer
 
@@ -58,17 +60,20 @@ class AdvertisementsListView(ListAPIView):
 class AdvertisementsDetailView(RetrieveAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdDetailSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class AdvertisementsCreateView(CreateAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdCreateSerializer
+    permission_classes = [IsAuthenticated, AdsCreatePermission]
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AdvertisementsUpdateView(UpdateAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdUpdateSerializer
+    permission_classes = [IsAuthenticated]
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -86,14 +91,16 @@ class AdvertisementsUplodateView(UpdateView):
             "id": self.object.id,
             "name": self.object.name,
             "author": self.object.author.id,
-            # "author": self.object.author,
             "price": self.object.price,
             "description": self.object.description,
             "category": self.object.category.id,
             "image": self.object.image.url if self.object.image else None
         })
 
+    permission_classes = [IsAuthenticated]
+
 
 class AdvertisementsDeleteView(DestroyAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdDeleteSerializer
+    permission_classes = [IsAuthenticated]

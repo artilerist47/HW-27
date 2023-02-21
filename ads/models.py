@@ -1,5 +1,7 @@
 from django.db import models
 
+from authentication.models import Profile
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -34,6 +36,7 @@ class User(models.Model):
     age = models.CharField(max_length=3)
     locations = models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
     # locations = models.ManyToManyField(Location)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = "Пользователь"
