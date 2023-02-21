@@ -73,7 +73,7 @@ class AdvertisementsCreateView(CreateAPIView):
 class AdvertisementsUpdateView(UpdateAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdUpdateSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, AdsCreatePermission]
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -97,10 +97,10 @@ class AdvertisementsUplodateView(UpdateView):
             "image": self.object.image.url if self.object.image else None
         })
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, AdsCreatePermission]
 
 
 class AdvertisementsDeleteView(DestroyAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdDeleteSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, AdsCreatePermission]

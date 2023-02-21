@@ -4,6 +4,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView,
 from rest_framework.permissions import IsAuthenticated
 
 from ads.models import User
+from ads.permissions import AdsCreatePermission
 from ads.serializers.user_serializer import UserListSerializer, UserDetailSerializer, UserCreateSerializer, \
     UserUpdateSerializer, UserDeleteSerializer
 
@@ -58,17 +59,17 @@ class UserDetailView(RetrieveAPIView):
 class UserCreateView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserCreateSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, AdsCreatePermission]
 
 
 @method_decorator(csrf_exempt, name='dispatch')
 class UserUpdateView(UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserUpdateSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, AdsCreatePermission]
 
 
 class UserDeleteView(DestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserDeleteSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, AdsCreatePermission]
