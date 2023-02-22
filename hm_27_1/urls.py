@@ -30,7 +30,7 @@ urlpatterns = [
                   path('cat/', include('ads.urls.cat_urls')),
                   path('ad/', include('ads.urls.ad_urls')),
                   path('user/', include('ads.urls.user_urls')),
-                  path('profile/', include('authentication.urls'))
+                  path('user/', include('authentication.urls'))
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += router.urls
