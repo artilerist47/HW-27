@@ -17,20 +17,20 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
 
-from ads import views
-from ads.views import location_views
+from ads.views.locations_views import LocatiionsViewSet
+
+router = routers.SimpleRouter()
+router.register('locations', LocatiionsViewSet)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    # path('', views.index),
-    path('cat/', include('ads.urls.cat_urls')),
-    path('ad/', include('ads.urls.ad_urls')),
-    path('user/', include('ads.urls.user_urls')),
-    path('location/', location_views.LocationListView.as_view()),
-    # path('media/', include('media.media_urls')),
-    # path('media/', include('ads.media_urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-#
-# if settings.DEBUG:
-#     urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                  path('admin/', admin.site.urls),
+                  # path('', views.index),
+                  path('cat/', include('ads.urls.cat_urls')),
+                  path('ad/', include('ads.urls.ad_urls')),
+                  path('user/', include('ads.urls.user_urls')),
+                  path('user/', include('authentication.urls'))
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += router.urls

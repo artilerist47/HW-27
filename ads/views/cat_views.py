@@ -1,112 +1,51 @@
-import json
-
-from django.core.paginator import Paginator
-from django.http import JsonResponse, Http404
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.permissions import IsAuthenticated
 
 from ads.models import Category
-from hm_27_1 import settings
-
-
-# def index(request):
-#     if request.method == "GET":
-#         return JsonResponse({"status": "ok"}, status=200)
+from ads.permissions import AdsCreatePermission
+from ads.serializers.cat_serializer import CatListSerializer, CatDetailSerializer, CatCreateSerializer, \
+    CatUpdateSerializer, CatDeleteSerializer
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class CategoryListView(ListView):
-    model = Category
+class CategoryListView(ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CatListSerializer
 
     def get(self, request, *args, **kwargs):
-        super().get(request, *args, **kwargs)
+        cat_name = request.GET.get('name', None)
+        if cat_name:
+            self.queryset = self.queryset.filter(
+                name__icontains=cat_name
+            )
 
-        search_text = request.GET.get("text", None)
-        if search_text:
-            self.object_list = self.object_list.filter(text=search_text)
-
-        self.object_list = self.object_list.order_by("name")
-
-        paginator = Paginator(self.object_list, settings.TOTAL_ON_PAGE)
-        page_number = request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
-
-        cat = []
-        for category in page_obj:
-            cat.append({
-                "id": category.id,
-                "name": category.name,
-
-            })
-
-        response = {
-            "items": cat,
-            "num_pages": paginator.num_pages,
-            "total": paginator.count
-        }
-        return JsonResponse(response, safe=False)
+        return super().get(request, *args, **kwargs)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class CategoryDetailView(DetailView):
-    model = Category
+class CategoryDetailView(RetrieveAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CatDetailSerializer
+    permission_classes = [IsAuthenticated]
 
-    def get(self, request, *args, **kwargs):
-        try:
-            category = self.get_object()
-        except Http404:
-            return JsonResponse({'error': 'Not found'}, status=404)
 
-        return JsonResponse({
-            "id": category.id,
-            "name": category.name},
-        )
+
+class CategoryCreateView(CreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CatCreateSerializer
+    permission_classes = [IsAuthenticated, AdsCreatePermission]
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class CategoryCreateView(CreateView):
-    model = Category
-    fields = ["name"]
-
-    def post(self, request, *args, **kwargs):
-        cat_data = json.loads(request.body)
-
-        category = Category.objects.create(
-            name=cat_data["name"],
-        )
-
-        return JsonResponse({
-            "id": category.id,
-            "name": category.name,
-        })
+class CategoryUpdateView(UpdateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CatUpdateSerializer
+    permission_classes = [IsAuthenticated, AdsCreatePermission]
 
 
-@method_decorator(csrf_exempt, name='dispatch')
-class CategoryUpdateView(UpdateView):
-    model = Category
-    fields = ["name"]
-
-    def patch(self, request, *args, **kwargs):
-        super().post(request, *args, **kwargs)
-
-        cat_data = json.loads(request.body)
-        self.object.name = cat_data["name"]
-
-        self.object.save()
-
-        return JsonResponse({
-            "id": self.object.id,
-            "name": self.object.name,
-        })
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-class CategoryDeleteView(DeleteView):
-    model = Category
-    success_url = '/'
-
-    def delete(self, request, *args, **kwargs):
-        super().delete(request, *args, **kwargs)
-
-        return JsonResponse({"status": "категория удаленна"}, status=200)
+class CategoryDeleteView(DestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CatDeleteSerializer
+    permission_classes = [IsAuthenticated, AdsCreatePermission]
